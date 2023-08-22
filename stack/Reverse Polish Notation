@@ -1,0 +1,28 @@
+class Solution:
+    def evalRPN(self, tokens: List[str]) -> int:
+        stack = []
+        total = 0
+        for values in tokens:
+            if values == "+" and stack:
+                total = stack[-1] + stack [-2]
+                stack.pop()
+                stack.pop()
+                stack.append(total)
+            elif values == "-":
+                total = stack [-2] - stack[-1]
+                stack.pop()
+                stack.pop()                
+                stack.append(total)
+            elif values == "/":
+                total = int(stack[-2] / stack[-1])
+                stack.pop()
+                stack.pop()                
+                stack.append(total)
+            elif values == "*":
+                total = int(stack[-2] * stack[-1])
+                stack.pop()
+                stack.pop()                
+                stack.append(total)
+            else:
+                stack.append(int(values))
+        return stack[-1]
