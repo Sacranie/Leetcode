@@ -1,0 +1,10 @@
+class Solution:
+    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+        res = defaultdict(list)
+        
+        for words in strs:
+            hash_map = [0] * 26
+            for char in words:
+                hash_map[ord(char) - ord('a')] += 1
+            res[tuple(hash_map)].append(words)
+        return res.values()
