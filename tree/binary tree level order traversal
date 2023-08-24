@@ -1,0 +1,27 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+
+class Solution:
+    def levelOrder(self, root: TreeNode) -> List[List[int]]:
+        res = [] #This is our result memory 
+        q = collections.deque() #This line creates an empty deque (double-ended queue) called q. A deque is a data structure that supports fast insertion and deletion from both ends.
+        if root: #This checks that the root is not null
+            q.append(root) #This appends the root to the double ended qq 
+
+        while q: #While the double ended queue is not null
+            val = [] #This is the memory we will use to put together the root
+
+            for i in range(len(q)):
+                node = q.popleft() #This assigns the left most value of the queue to node which makes sense as we want to go from left to right
+                val.append(node.val)#This appends the value of the node to the val memory
+                if node.left: #If the left node is non zero then it appends it to the queue as it should
+                    q.append(node.left)
+                if node.right: # This does the same thing but with the right and the order is important because of the question
+                    q.append(node.right)
+            res.append(val) #This appends the value into the result
+        return res
