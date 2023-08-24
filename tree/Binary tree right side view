@@ -1,0 +1,23 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def rightSideView(self, root: TreeNode) -> List[int]:
+        res = [] #This is the memory for the result variable
+        q = collections.deque([root])#This makes a queue which is efficient for inserting and removing memory which is really good for BFS
+
+        while q:#This ensures that the code runs until the queue is empty which is essentiall when we look at all parts of the tree
+            rightSide = None#Initialises the variable
+
+            for i in range(len(q)):
+                node = q.popleft()
+                if node:
+                    rightSide = node
+                    q.append(node.left)
+                    q.append(node.right)#This piece of code is the same as another problem and it is just there so we can looka aat all the values for the queue. At the end of the forr loop we can then have the rightside equal to the most right hand side node so then this is appenede to our result
+            if rightSide:
+                res.append(rightSide.val)
+        return res
