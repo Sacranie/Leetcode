@@ -1,0 +1,16 @@
+class Solution:
+    def characterReplacement(self, s: str, k: int) -> int:
+        count = {} #This sets up a dictionary 
+        res = 0 # This is our result variable
+
+        l = 0
+        for r in range (len(s)):
+            count[s[r]] = 1 + count.get(s[r] , 0) # This allows us to iterate through every single character in the list and acts as a requency counter for that element
+
+            while r - l + 1 - max(count.values()) > k: #While the length of the window minus the most frequent character is greater than k it means that we have to minimise the size of the window
+                count[s[l]] -= 1
+                l += 1
+            res = max(res, r - l + 1) #This is the result variable again being updated continuously
+        return res
+
+        
