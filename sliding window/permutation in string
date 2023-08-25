@@ -1,0 +1,37 @@
+class Solution:
+    def checkInclusion(self, s1: str, s2: str) -> bool:
+        if len(s1) > len(s2): #This is very obious because s1 has to be less thn s2. Base case 
+            return False
+
+        s1Count, s2Count = [0] * 26, [0] * 26 #This creates two hash maps ensures that the time complexity is O(n)
+        for i in range(len(s1)):
+            s1Count[ord(s1[i]) - ord("a")] += 1
+            s2Count[ord(s2[i]) - ord("a")] += 1
+# This makes the hash maps for both s1 and s2
+        matches = 0
+        for i in range(26):
+            matches += 1 if s1Count[i] == s2Count[i] else 0
+# This just checks whether the hash maps are the same right now and gets the number of matches
+#The next stpes are our sliding window steps
+        l = 0
+        for r in range(len(s1), len(s2)):
+            if matches == 26:
+                return True
+#Remmeber we only need r to be within the certain bounds as said above 
+            index = ord(s2[r]) - ord("a") #This gives the specific charcater 
+            s2Count[index] += 1 #Becasue we are moving forward e.g right counter is moving one to the right the count of one of the values will increase obviously 
+            if s1Count[index] == s2Count[index]: #This is asking whether the count of that character is the same and if it is then to icnrement the matches by one 
+                matches += 1
+            elif s1Count[index] + 1 == s2Count[index]:
+                matches -= 1
+#The only options when increasing the counter of the s2 character os that it is now equal to the count of s1 or it is greater than it 
+
+            index = ord(s2[l]) - ord("a")
+            s2Count[index] -= 1
+            if s1Count[index] == s2Count[index]:
+                matches += 1
+            elif s1Count[index] - 1 == s2Count[index]:
+                matches -= 1
+            l += 1
+# This whole line of code does the same as the one above but minuses as left is now moving one to thw right so one character is being removed
+        return matches == 26
