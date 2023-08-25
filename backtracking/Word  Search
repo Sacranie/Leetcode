@@ -1,0 +1,37 @@
+class Solution:
+    def exist(self, grid: List[List[str]], word: str) -> bool:
+        if not grid or not grid[0]:
+            return False
+
+        visit = set()
+        rows, cols = len(grid), len(grid[0])
+
+        def dfs(r, c, index):
+            if (
+                r not in range(rows)
+                or c not in range(cols)
+                or grid[r][c] != word[index]
+                or (r, c) in visit
+            ):
+                return False
+            
+            if index == len(word) - 1:
+                return True
+
+            visit.add((r, c))
+            directions = [[0, 1], [0, -1], [1, 0], [-1, 0]]
+            for dr, dc in directions:
+                new_r, new_c = r + dr, c + dc
+                if (new_r, new_c) not in visit:
+                    if dfs(new_r, new_c, index + 1):
+                        return True
+            visit.remove((r, c))  # Backtrack by removing the cell from visit set
+            return False
+
+        for r in range(rows):
+            for c in range(cols):
+                if grid[r][c] == word[0]:
+                    if dfs(r, c, 0):
+                        return True
+
+        return False
