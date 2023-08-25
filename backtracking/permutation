@@ -1,0 +1,16 @@
+class Solution:
+    def permute(self, nums: List[int]) -> List[List[int]]:
+        nums.sort()
+        if len(nums) == 1:
+            return [nums]
+        
+        res = []
+        for i, num in enumerate(nums):
+                
+            rest = nums[:i] + nums[i+1:]
+            perms = self.permute(rest)
+            
+            for perm in perms:
+                res.append([num] + perm)
+                
+        return res
