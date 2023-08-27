@@ -1,0 +1,39 @@
+class Solution:
+    def pacificAtlantic(self, grid: List[List[int]]) -> List[List[int]]:
+        if not grid or not grid[0]:
+            return [] #If there is not a grid then return the result of none 
+
+        visit_pacific = set()
+        visit_atlantic = set() #Both of this allows us to see what rows and columns are already visited 
+        rows, cols = len(grid), len(grid[0])
+
+        def dfs(r, c,prev, visit):
+            #We have to return if it sint on the grid or we have alreadyb visited the elemnt or the value is less than the previous
+            if (
+                r not in range(rows)
+                or c not in range(cols)
+                or grid[r][c] < prev
+                or (r, c) in visit
+            ):
+                return
+
+            visit.add((r, c))
+            directions = [[0, 1], [0, -1], [1, 0], [-1, 0]]
+            for dr, dc in directions:
+                dfs(r + dr, c + dc, grid[r][c], visit)
+
+        for c in range(cols):
+            dfs(0, c, grid[0][c], visit_pacific)
+            dfs(rows - 1, c, grid[rows - 1][c], visit_atlantic) #This aadds them from the top and bottom
+
+        for r in range(rows):
+            dfs(r, 0, grid[r][0], visit_pacific)
+            dfs(r, cols - 1, grid[r][cols - 1], visit_atlantic)
+            #Left side and right side
+
+        res = []
+        for r in range(rows):
+            for c in range(cols):
+                if (r, c) in visit_pacific and (r, c) in visit_atlantic:
+                    res.append([r, c]) #If both of them are highlighted then they are in ommon and so we can append it to the result
+        return res
